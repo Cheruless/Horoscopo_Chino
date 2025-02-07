@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @WebServlet("/eliminarUsuario")
 public class EliminarUsuario_Servlet extends HttpServlet {
-    private Usuario_DAO daoUsuario = new Usuario_DAO_Impl();
+    private final Usuario_DAO daoUsuario = new Usuario_DAO_Impl();
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
@@ -22,7 +22,7 @@ public class EliminarUsuario_Servlet extends HttpServlet {
             Usuario usuarioLogueado = (Usuario) session.getAttribute("usuario");
             String password = req.getParameter("password");
 
-            if (password != null && !password.equals("")) {
+            if (password != null && !password.isBlank()) {
                 try {
                     daoUsuario.eliminarUsuario(usuarioLogueado.getId(), password);
                     session.invalidate();

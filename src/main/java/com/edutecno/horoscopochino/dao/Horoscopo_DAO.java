@@ -6,6 +6,6 @@ import java.sql.Date;
 import java.util.List;
 
 public interface Horoscopo_DAO {
-    public List<Horoscopo> obtenerHoroscopo();
-    public Horoscopo obtenerHoroscopoPorFecha(Date fecha);
+    List<Horoscopo> obtenerHoroscopo();
+    Horoscopo obtenerHoroscopoPorFecha(Date fecha);
 }

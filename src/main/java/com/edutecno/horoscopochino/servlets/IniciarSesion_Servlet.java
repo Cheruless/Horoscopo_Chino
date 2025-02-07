@@ -13,7 +13,7 @@ import java.io.IOException;
 //FUNCIONAL
 @WebServlet("/iniciarSesion")
 public class IniciarSesion_Servlet extends HttpServlet {
-    private Usuario_DAO daoUsuario = new Usuario_DAO_Impl();
+    private final Usuario_DAO daoUsuario = new Usuario_DAO_Impl();
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");

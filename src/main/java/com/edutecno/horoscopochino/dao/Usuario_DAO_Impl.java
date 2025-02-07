@@ -92,39 +92,42 @@ public class Usuario_DAO_Impl implements Usuario_DAO {
 
     @Override
     public void modificarUsuario(int idUsuario, Usuario usuarioUpdate) {
-        String sql = "UPDATE usuarios SET ";
-        Map<Integer, String> campos = new HashMap<>();
+        StringBuilder sql = new StringBuilder("UPDATE usuarios SET ");
+        List<String> campos = new ArrayList<>();
+        List<Object> valores = new ArrayList<>();
 
-        if (usuarioUpdate.getNombre() != null)
-            campos.put(1, "nombre = ?");
-        if (usuarioUpdate.getUsername() != null)
-            campos.put(2, "username = ?");
-        if (usuarioUpdate.getEmail() != null)
-            campos.put(3, "email = ?");
-        if (usuarioUpdate.getPassword() != null)
-            campos.put(4, "password = ?");
+        if (usuarioUpdate.getNombre() != null) {
+            campos.add("nombre = ?");
+            valores.add(usuarioUpdate.getNombre());
+        }
+        if (usuarioUpdate.getUsername() != null) {
+            campos.add("username = ?");
+            valores.add(usuarioUpdate.getUsername());
+        }
+        if (usuarioUpdate.getEmail() != null) {
+            campos.add("email = ?");
+            valores.add(usuarioUpdate.getEmail());
+        }
+        if (usuarioUpdate.getPassword() != null) {
+            campos.add("password = ?");
+            valores.add(usuarioUpdate.getPassword());
+        }
 
-        if (campos.isEmpty())
+        if (campos.isEmpty()) {
             return;
+        }
 
-        sql += String.join(", ", campos.values());
-        sql += " WHERE id = ?";
+        sql.append(String.join(", ", campos));
+        sql.append(" WHERE id = ?");
 
         try (
                 Connection con = ConexionDB.generaPoolConexion();
-                PreparedStatement ps = con.prepareStatement(sql)
+                PreparedStatement ps = con.prepareStatement(sql.toString())
         ) {
-            int index = 1;
-            for (Integer i : campos.keySet()) {
-                switch (i) {
-                    case 1 -> ps.setString(index, usuarioUpdate.getNombre());
-                    case 2 -> ps.setString(index, usuarioUpdate.getUsername());
-                    case 3 -> ps.setString(index, usuarioUpdate.getEmail());
-                    case 4 -> ps.setString(index, usuarioUpdate.getPassword());
-                }
-                index++;
+            for (int i = 0; i < valores.size(); i++) {
+                ps.setObject(i + 1, valores.get(i));
             }
-            ps.setInt(index, idUsuario);
+            ps.setInt(valores.size() + 1, idUsuario);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
