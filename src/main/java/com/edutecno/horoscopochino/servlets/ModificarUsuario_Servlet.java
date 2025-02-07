@@ -28,7 +28,6 @@ public class ModificarUsuario_Servlet extends HttpServlet {
             Usuario usuarioLogueado = (Usuario) session.getAttribute("usuario");
 
             if (usuarioLogueado.getPassword().equals(password)) {
-                //TODO: SI EL USUARIO NO QUIERE MODIFICAR CONTRASEÑA, NO MODIFICARLA.
                 String passwordModificar = req.getParameter("password-modificar");
                 String passwordModificarConfirm = req.getParameter("password-modificar-confirm");
 
